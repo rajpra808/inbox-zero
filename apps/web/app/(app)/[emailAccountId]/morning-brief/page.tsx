@@ -184,7 +184,7 @@ export default function MorningBriefPage() {
         {enabled && (
           <div className="mt-8">
             <h2 className="mb-4 text-lg font-semibold">Recent briefs</h2>
-            <LoadingContent loading={!historyData} error={null}>
+            <LoadingContent loading={!historyData} error={undefined}>
               <div className="space-y-4">
                 {historyData?.briefs.map((brief) => (
                   <div
