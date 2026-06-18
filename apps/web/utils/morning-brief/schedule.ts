@@ -28,6 +28,7 @@ export function getMorningBriefScheduleProgression(
       intervalDays: schedule.intervalDays,
       daysOfWeek: schedule.daysOfWeek,
       timeOfDay: schedule.timeOfDay,
+      occurrences: null,
       lastOccurrenceAt,
     }),
   };

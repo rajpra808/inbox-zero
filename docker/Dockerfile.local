@@ -41,9 +41,9 @@ COPY apps/web/prisma/schema.prisma apps/web/prisma/schema.prisma
 # Copy postinstall script
 COPY clone-marketing.sh clone-marketing.sh
 
-# Install deps with BuildKit cache for pnpm store
-RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
-    pnpm install --no-frozen-lockfile --shamefully-hoist
+# Install deps without BuildKit cache mount so the pnpm store is preserved in the image layer.
+# This prevents symlinks from becoming dangling in subsequent RUN steps.
+RUN pnpm install --no-frozen-lockfile --shamefully-hoist
 
 # Copy the full repo
 COPY . .
@@ -96,7 +96,7 @@ RUN cd apps/web && pnpm exec prisma generate --schema=prisma/schema.prisma
 
 # Step 2: Build Next.js with webpack (not Turbopack) for lower memory usage
 # --webpack: Use webpack/SWC instead of Turbopack (Next.js 16 default)
-# Cache mount persists between builds for incremental compilation
+# Cache mount persists between builds for incremental compilation.
 RUN --mount=type=cache,target=/app/apps/web/.next/cache \
     cd apps/web && \
     pnpm exec next build --webpack && \
@@ -110,6 +110,9 @@ WORKDIR /app
 
 RUN apk add --no-cache openssl
 
+# Copy pnpm store so symlinks resolve correctly
+COPY --from=builder /root/.local/share/pnpm/store /root/.local/share/pnpm/store
+
 # Copy standalone build
 COPY --from=builder /app/apps/web/.next/standalone ./
 COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
@@ -122,7 +125,7 @@ COPY docker/scripts /app/docker/scripts
 RUN chmod +x /app/docker/scripts/*.sh
 
 # Install Prisma CLI globally for migrations
-RUN npm install -g prisma@7.3.0
+RUN npm install -g prisma@7.8.0
 # Set NODE_PATH so prisma/config imports resolve correctly
 ENV NODE_PATH=/usr/local/lib/node_modules
 
