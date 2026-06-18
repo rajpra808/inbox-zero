@@ -8,6 +8,7 @@ export const updateSlackRouteBody = z.object({
     MessagingRoutePurpose.RULE_NOTIFICATIONS,
     MessagingRoutePurpose.SCHEDULED_CHECK_INS,
     MessagingRoutePurpose.MEETING_BRIEFS,
+    MessagingRoutePurpose.MORNING_BRIEFS,
     MessagingRoutePurpose.DOCUMENT_FILINGS,
     MessagingRoutePurpose.DIGESTS,
     MessagingRoutePurpose.FOLLOW_UPS,
