@@ -17,6 +17,7 @@ import {
   FileTextIcon,
   HardDriveIcon,
   InboxIcon,
+  LayersIcon,
   type LucideIcon,
   MailsIcon,
   MessageSquareIcon,
@@ -26,6 +27,7 @@ import {
   RatioIcon,
   SendIcon,
   SparklesIcon,
+  SunriseIcon,
   TagIcon,
   Users2Icon,
   ZapIcon,
@@ -84,6 +86,12 @@ export const useNavigation = () => {
 
   const manageItems: NavItem[] = useMemo(
     () => [
+      {
+        name: "Unified Inbox",
+        href: prefixPath(currentEmailAccountId, "/unified-inbox"),
+        icon: LayersIcon,
+        beta: true,
+      },
       {
         name: "Chat",
         href: prefixPath(currentEmailAccountId, "/assistant"),
@@ -150,6 +158,12 @@ export const useNavigation = () => {
             },
           ]
         : []),
+      {
+        name: "Morning Brief",
+        href: prefixPath(currentEmailAccountId, "/morning-brief"),
+        icon: SunriseIcon,
+        beta: true,
+      },
       {
         name: "Attachments",
         href: prefixPath(currentEmailAccountId, "/drive"),

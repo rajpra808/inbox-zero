@@ -135,6 +135,7 @@ describe("LLM use cases", () => {
       [LlmUseCase.McpAgent]: "economy",
       [LlmUseCase.MeetingBriefing]: "default",
       [LlmUseCase.MeetingWebSearch]: "economy",
+      [LlmUseCase.MorningBrief]: "default",
       [LlmUseCase.ParseFilingReply]: "economy",
       [LlmUseCase.PersonaAnalysis]: "economy",
       [LlmUseCase.PromptToRules]: "chat",

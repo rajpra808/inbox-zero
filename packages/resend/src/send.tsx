@@ -20,6 +20,9 @@ import MeetingBriefingEmail, {
   type MeetingBriefingEmailProps,
   generateMeetingBriefingSubject,
 } from "../emails/meeting-briefing";
+import MorningBriefEmail, {
+  type MorningBriefEmailProps,
+} from "../emails/morning-brief";
 import ColdEmailNotification, {
   type ColdEmailNotificationProps,
 } from "../emails/cold-email-notification";
@@ -318,6 +321,33 @@ export const sendMeetingBriefingEmail = async ({
       {
         name: "category",
         value: "meeting-briefing",
+      },
+    ],
+  });
+
+export const sendMorningBriefEmail = async ({
+  from,
+  to,
+  test,
+  emailProps,
+}: {
+  from: string;
+  to: string;
+  test?: boolean;
+  emailProps: MorningBriefEmailProps;
+}) =>
+  sendEmail({
+    from,
+    to,
+    subject: "Your Morning Brief",
+    react: <MorningBriefEmail {...emailProps} />,
+    test,
+    unsubscribeToken: emailProps.unsubscribeToken,
+    baseUrl: emailProps.baseUrl,
+    tags: [
+      {
+        name: "category",
+        value: "morning-brief",
       },
     ],
   });

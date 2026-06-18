@@ -99,11 +99,13 @@ model User {
 
   apiKeys ApiKey[]
 
-  emailAccounts EmailAccount[]
+  emailAccounts        EmailAccount[]
+  morningBriefSchedule MorningBriefSchedule?
+  morningBriefs        MorningBrief[]
 
   // Referral relationships
-  referralsMade    Referral[] @relation("ReferrerUser")
-  referralReceived Referral?  @relation("ReferredUser")
+  referralsMade    Referral[]     @relation("ReferrerUser")
+  referralReceived Referral?      @relation("ReferredUser")
   scimProviders    ScimProvider[]
 }
 
@@ -338,6 +340,70 @@ model DigestItem {
   @@unique([digestId, threadId, messageId])
   @@index([actionId])
   @@index([coldEmailId]) // @deprecated
+}
+
+model MorningBriefSchedule {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  enabled Boolean @default(false)
+
+  // Schedule fields (mirrors Schedule model pattern)
+  intervalDays Int? // Total interval in days
+  daysOfWeek   Int? // Bit mask for days of week (0-127), Sunday=bit 0
+  timeOfDay    DateTime? // Time of day (canonical date 1970-01-01)
+
+  nextOccurrenceAt DateTime?
+  lastOccurrenceAt DateTime?
+  lastSentAt       DateTime?
+
+  briefs MorningBrief[]
+
+  @@unique([userId])
+  @@index([enabled, nextOccurrenceAt])
+}
+
+model MorningBrief {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  scheduleId String?
+  schedule   MorningBriefSchedule? @relation(fields: [scheduleId], references: [id], onDelete: SetNull)
+
+  executiveSummary String             @db.Text
+  sentAt           DateTime?
+  status           MorningBriefStatus @default(PENDING)
+
+  items MorningBriefItem[]
+
+  @@index([userId])
+}
+
+model MorningBriefItem {
+  id             String       @id @default(cuid())
+  createdAt      DateTime     @default(now())
+  morningBriefId String
+  morningBrief   MorningBrief @relation(fields: [morningBriefId], references: [id], onDelete: Cascade)
+
+  emailAccountId  String
+  threadId        String
+  messageId       String
+  from            String
+  subject         String?
+  summary         String  @db.Text
+  importanceScore Float?
+  category        String?
+  actionNeeded    Boolean @default(false)
+
+  @@index([morningBriefId])
 }
 
 model Schedule {
@@ -840,6 +906,8 @@ model EmailMessage {
   sent            Boolean
   draft           Boolean
   inbox           Boolean
+  subject         String? // subject line (for unified inbox)
+  snippet         String? // short body preview (for unified inbox)
 
   emailAccountId String
   emailAccount   EmailAccount @relation(fields: [emailAccountId], references: [id], onDelete: Cascade)
@@ -849,6 +917,7 @@ model EmailMessage {
   @@index([emailAccountId, date])
   @@index([emailAccountId, from])
   @@index([emailAccountId, fromName])
+  @@index([emailAccountId, inbox, date])
 }
 
 model ResponseTime {
@@ -878,8 +947,8 @@ model ThreadTracker {
   resolved  Boolean           @default(false)
   type      ThreadTrackerType
 
-  followUpAppliedAt DateTime?
-  followUpDraftId   String?
+  followUpAppliedAt     DateTime?
+  followUpDraftId       String?
   followUpNotifications Json?
 
   emailAccountId String
@@ -1220,20 +1289,20 @@ model Booking {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  guestName           String
-  guestEmail          String
-  guestNote           String?
-  startTime           DateTime
-  endTime             DateTime
+  guestName            String
+  guestEmail           String
+  guestNote            String?
+  startTime            DateTime
+  endTime              DateTime
   status               BookingStatus @default(PENDING_PROVIDER_EVENT)
   provider             String?
   providerConnectionId String?
   providerCalendarId   String?
   providerEventId      String?
   videoConferenceLink  String?
-  cancelTokenHash     String
-  cancellationReason  String?
-  idempotencyToken    String?
+  cancelTokenHash      String
+  cancellationReason   String?
+  idempotencyToken     String?
 
   bookingLinkId  String
   bookingLink    BookingLink  @relation(fields: [bookingLinkId], references: [id], onDelete: Cascade)
@@ -1439,10 +1508,10 @@ model DocumentFiling {
   emailAccountId    String
   emailAccount      EmailAccount    @relation(fields: [emailAccountId], references: [id], onDelete: Cascade)
 
+  @@unique([emailAccountId, messageId, attachmentId])
   @@index([emailAccountId, status])
   @@index([driveConnectionId])
   @@index([messageId])
-  @@unique([emailAccountId, messageId, attachmentId])
 }
 
 model AttachmentSource {
@@ -1762,6 +1831,13 @@ enum DigestStatus {
   FAILED
 }
 
+enum MorningBriefStatus {
+  PENDING
+  PROCESSING
+  SENT
+  FAILED
+}
+
 enum ScheduledActionStatus {
   PENDING
   EXECUTING
@@ -1823,6 +1899,7 @@ enum MessagingRoutePurpose {
   DOCUMENT_FILINGS
   DIGESTS
   FOLLOW_UPS
+  MORNING_BRIEFS
 }
 
 enum MessagingRouteTargetType {

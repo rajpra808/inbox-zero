@@ -20,6 +20,9 @@ vi.mock("@/utils/prisma", () => ({
       findFirst: vi.fn().mockResolvedValue(null),
       findUnique: vi.fn().mockResolvedValue(null),
     },
+    emailMessage: {
+      upsert: vi.fn().mockResolvedValue({}),
+    },
   },
 }));
 vi.mock("@/utils/cold-email/is-cold-email", () => ({

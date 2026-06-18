@@ -17,6 +17,7 @@ import { clearFollowUpLabel } from "@/utils/follow-up/labels";
 import { NewsletterStatus } from "@/generated/prisma/enums";
 import type { EmailAccount } from "@/generated/prisma/client";
 import { extractEmailAddress, extractNameFromEmail } from "@/utils/email";
+import { upsertEmailMessage } from "@/utils/email/save-email-message";
 import { isIgnoredSender } from "@/utils/filter-ignored-senders";
 import type { EmailProvider } from "@/utils/email/types";
 import type { ParsedMessage, RuleWithActions } from "@/utils/types";
@@ -77,6 +78,13 @@ export async function processHistoryItem(
       logger.info("Skipping. Ignored sender.");
       return;
     }
+
+    // Keep the EmailMessage table in sync so it can power the unified inbox.
+    await upsertEmailMessage({
+      message: parsedMessage,
+      emailAccountId,
+      logger,
+    });
 
     // Get threadId from message if not provided
     const actualThreadId = threadId || parsedMessage.threadId;

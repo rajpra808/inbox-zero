@@ -204,6 +204,8 @@ export async function saveBatch({
         sent: !!m.labelIds?.includes("SENT"),
         draft: !!m.labelIds?.includes("DRAFT"),
         inbox: !!m.labelIds?.includes("INBOX"),
+        subject: m.subject,
+        snippet: m.snippet,
         emailAccountId,
       };
     })
