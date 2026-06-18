@@ -26,6 +26,8 @@ export const updateMorningBriefSettingsAction = actionClientUser
         ? calculateNextScheduleDate({
             daysOfWeek,
             timeOfDay,
+            intervalDays: null,
+            occurrences: null,
             lastOccurrenceAt: new Date(),
           })
         : null;
