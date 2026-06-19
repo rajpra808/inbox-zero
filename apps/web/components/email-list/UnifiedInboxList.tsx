@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
 import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ButtonLoader } from "@/components/Loading";
 import { ChevronsDownIcon } from "lucide-react";
 import type { UnifiedInboxThread } from "@/app/api/unified-inbox/validation";
+import { UnifiedInboxThreadViewer } from "@/components/email-list/UnifiedInboxThreadViewer";
 
 export function UnifiedInboxList({
   threads,
@@ -20,6 +21,11 @@ export function UnifiedInboxList({
   isLoadingMore?: boolean;
   handleLoadMore?: () => void;
 }) {
+  const [selectedThread, setSelectedThread] = useState<{
+    threadId: string;
+    emailAccountId: string;
+  } | null>(null);
+
   if (threads.length === 0) {
     return (
       <div className="mt-20 flex items-center justify-center font-title text-2xl text-primary">
@@ -29,84 +35,98 @@ export function UnifiedInboxList({
   }
 
   return (
-    <ul className="min-w-0 divide-y divide-border overflow-x-hidden">
-      {threads.map((thread) => {
-        const initial = (thread.fromName || thread.from || "?")
-          .charAt(0)
-          .toUpperCase();
-        return (
-          <li key={thread.id}>
-            <Link
-              href={`/${thread.emailAccountId}/mail?thread-id=${thread.threadId}`}
-              className="flex gap-3 px-4 py-3 hover:bg-muted/50"
-            >
-              <Avatar className="h-9 w-9">
-                {thread.account.image ? (
-                  <AvatarImage src={thread.account.image} alt="" />
-                ) : null}
-                <AvatarFallback>{initial}</AvatarFallback>
-              </Avatar>
+    <>
+      <ul className="w-full max-w-full divide-y divide-border overflow-hidden">
+        {threads.map((thread) => {
+          const initial = (thread.fromName || thread.from || "?")
+            .charAt(0)
+            .toUpperCase();
+          return (
+            <li key={thread.id} className="w-full max-w-full overflow-hidden">
+              <button
+                type="button"
+                onClick={() =>
+                  setSelectedThread({
+                    threadId: thread.threadId,
+                    emailAccountId: thread.emailAccountId,
+                  })
+                }
+                className="flex w-full max-w-full text-left gap-3 px-4 py-3 hover:bg-muted/50 overflow-hidden"
+              >
+                <Avatar className="h-9 w-9 shrink-0">
+                  {thread.account.image ? (
+                    <AvatarImage src={thread.account.image} alt="" />
+                  ) : null}
+                  <AvatarFallback>{initial}</AvatarFallback>
+                </Avatar>
 
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`truncate text-sm ${thread.read ? "text-muted-foreground" : "font-semibold"}`}
-                  >
-                    {thread.fromName || thread.from}
-                  </span>
-                  <span className="ml-auto shrink-0 text-xs text-muted-foreground">
-                    {formatDistanceToNow(new Date(thread.date), {
-                      addSuffix: true,
-                    })}
-                  </span>
-                </div>
-
-                <div
-                  className={`truncate text-sm ${thread.read ? "text-muted-foreground" : "font-medium"}`}
-                >
-                  {thread.subject || "(no subject)"}
-                </div>
-
-                {thread.snippet ? (
-                  <div className="truncate text-xs text-muted-foreground">
-                    {thread.snippet}
+                <div className="min-w-0 flex-1 overflow-hidden">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`truncate text-sm ${thread.read ? "text-muted-foreground" : "font-semibold"}`}
+                    >
+                      {thread.fromName || thread.from}
+                    </span>
+                    <span className="ml-auto shrink-0 text-xs text-muted-foreground">
+                      {formatDistanceToNow(new Date(thread.date), {
+                        addSuffix: true,
+                      })}
+                    </span>
                   </div>
-                ) : null}
 
-                <div className="mt-1 flex items-center gap-2">
-                  <Badge variant="secondary" className="text-xs font-normal">
-                    {thread.account.email}
-                  </Badge>
-                  {thread.category ? (
-                    <Badge variant="outline" className="text-xs font-normal">
-                      {thread.category}
+                  <div
+                    className={`truncate text-sm ${thread.read ? "text-muted-foreground" : "font-medium"}`}
+                  >
+                    {thread.subject || "(no subject)"}
+                  </div>
+
+                  {thread.snippet ? (
+                    <div className="truncate text-xs text-muted-foreground">
+                      {thread.snippet}
+                    </div>
+                  ) : null}
+
+                  <div className="mt-1 flex items-center gap-2">
+                    <Badge variant="secondary" className="text-xs font-normal">
+                      {thread.account.email}
                     </Badge>
-                  ) : null}
-                  {!thread.read ? (
-                    <span className="h-2 w-2 rounded-full bg-blue-500" />
-                  ) : null}
+                    {thread.category ? (
+                      <Badge variant="outline" className="text-xs font-normal">
+                        {thread.category}
+                      </Badge>
+                    ) : null}
+                    {!thread.read ? (
+                      <span className="h-2 w-2 rounded-full bg-blue-500" />
+                    ) : null}
+                  </div>
                 </div>
-              </div>
-            </Link>
-          </li>
-        );
-      })}
-      {showLoadMore && (
-        <Button
-          variant="outline"
-          className="mb-2 w-full"
-          size="sm"
-          onClick={handleLoadMore}
-          disabled={isLoadingMore}
-        >
-          {isLoadingMore ? (
-            <ButtonLoader />
-          ) : (
-            <ChevronsDownIcon className="mr-2 h-4 w-4" />
-          )}
-          <span>Load more</span>
-        </Button>
-      )}
-    </ul>
+              </button>
+            </li>
+          );
+        })}
+        {showLoadMore && (
+          <Button
+            variant="outline"
+            className="mb-2 w-full"
+            size="sm"
+            onClick={handleLoadMore}
+            disabled={isLoadingMore}
+          >
+            {isLoadingMore ? (
+              <ButtonLoader />
+            ) : (
+              <ChevronsDownIcon className="mr-2 h-4 w-4" />
+            )}
+            <span>Load more</span>
+          </Button>
+        )}
+      </ul>
+
+      <UnifiedInboxThreadViewer
+        threadId={selectedThread?.threadId ?? null}
+        emailAccountId={selectedThread?.emailAccountId ?? null}
+        onClose={() => setSelectedThread(null)}
+      />
+    </>
   );
 }

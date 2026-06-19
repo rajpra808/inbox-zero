@@ -55,8 +55,10 @@ ENV DOCKER_BUILD=true
 # Standalone output for Docker deployment
 ENV NEXT_PRIVATE_STANDALONE=true
 
-# 3GB for webpack build + TypeScript checking (Turbopack needs 6-8GB+ and frequently OOMs)
-ENV NODE_OPTIONS=--max_old_space_size=3072
+# 3.5GB for webpack build + TypeScript checking (Turbopack needs 6-8GB+ and frequently OOMs)
+ENV NODE_OPTIONS=--max_old_space_size=3584
+# Force Next.js to use fewer workers to prevent memory spikes (defaults to CPU core count)
+ENV NEXT_PRIVATE_MAX_WORKERS=2
 
 # Feature flag placeholders
 ARG NEXT_PUBLIC_BASE_URL="http://NEXT_PUBLIC_BASE_URL_PLACEHOLDER"

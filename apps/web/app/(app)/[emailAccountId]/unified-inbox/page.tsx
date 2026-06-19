@@ -5,8 +5,6 @@ import useSWRInfinite from "swr/infinite";
 import { PageWrapper } from "@/components/PageWrapper";
 import { PageHeader } from "@/components/PageHeader";
 import { LoadingContent } from "@/components/LoadingContent";
-import { BetaBanner } from "@/app/(app)/[emailAccountId]/mail/BetaBanner";
-import { ClientOnly } from "@/components/ClientOnly";
 import { PermissionsCheck } from "@/app/(app)/[emailAccountId]/PermissionsCheck";
 import { UnifiedInboxList } from "@/components/email-list/UnifiedInboxList";
 import type { UnifiedInboxResponse } from "@/app/api/unified-inbox/validation";
@@ -47,9 +45,6 @@ export default function UnifiedInboxPage() {
     <PageWrapper>
       <PageHeader title="Unified Inbox" />
       <PermissionsCheck />
-      <ClientOnly>
-        <BetaBanner />
-      </ClientOnly>
       <LoadingContent loading={isLoading && !data} error={error}>
         <UnifiedInboxList
           threads={allThreads}

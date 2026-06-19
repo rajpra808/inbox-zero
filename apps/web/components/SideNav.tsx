@@ -90,7 +90,6 @@ export const useNavigation = () => {
         name: "Unified Inbox",
         href: prefixPath(currentEmailAccountId, "/unified-inbox"),
         icon: LayersIcon,
-        beta: true,
       },
       {
         name: "Chat",

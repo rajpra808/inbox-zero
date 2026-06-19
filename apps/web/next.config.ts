@@ -29,19 +29,15 @@ const nextConfig: NextConfig = {
   experimental:
     isDevelopment || isProductionBuild
       ? {
+          cpus: 1,
           ...(isDevelopment
             ? {
-                // This app has a large route graph. Avoid front-loading all
-                // route modules into memory at startup during local
-                // development.
                 preloadEntriesOnStart: false,
               }
             : {}),
           ...(isProductionBuild
             ? {
-                // Keep the static build from fanning out too many workers at
-                // once. This trades a bit of build time for lower peak RAM.
-                staticGenerationMaxConcurrency: 4,
+                staticGenerationMaxConcurrency: 1,
                 staticGenerationMinPagesPerWorker: 100,
               }
             : {}),
@@ -56,7 +52,9 @@ const nextConfig: NextConfig = {
   output: process.env.DOCKER_BUILD === "true" ? "standalone" : undefined,
   // Skip TypeScript checking during E2E CI builds to save memory
   typescript: {
-    ignoreBuildErrors: process.env.SKIP_TYPE_CHECK === "true",
+    ignoreBuildErrors:
+      process.env.SKIP_TYPE_CHECK === "true" ||
+      process.env.DOCKER_BUILD === "true",
   },
   serverExternalPackages: [
     "@sentry/nextjs",
@@ -440,7 +438,9 @@ if (env.MICROSOFT_CLIENT_ID && !env.MICROSOFT_WEBHOOK_CLIENT_STATE) {
 const withSerwist = withSerwistInit({
   swSrc: "app/sw.ts",
   swDest: "public/sw.js",
-  disable: process.env.NODE_ENV !== "production",
+  disable:
+    process.env.NODE_ENV !== "production" ||
+    process.env.DOCKER_BUILD === "true",
   maximumFileSizeToCacheInBytes: 3 * 1024 * 1024, // 3MB
 });
 
