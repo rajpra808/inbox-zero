@@ -6,28 +6,51 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AxiomWebVitals } from "next-axiom";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { Analytics as DubAnalytics } from "@dub/analytics/react";
-import { Geist } from "next/font/google";
+import { Inter_Tight } from "next/font/google";
 import localFont from "next/font/local";
 import type { WebApplication, WithContext } from "schema-dts";
 import "../styles/globals.css";
 import { PostHogPageview, PostHogProvider } from "@/providers/PostHogProvider";
 import { env } from "@/env";
 import { GlobalProviders } from "@/providers/GlobalProviders";
+import { ThemeProvider } from "@/components/theme-provider";
 import { UTM } from "@/app/utm";
 import { startupImage } from "@/app/startup-image";
 import { Toaster } from "@/components/Toast";
 import { BRAND_ICON_URL, BRAND_NAME, toAbsoluteUrl } from "@/utils/branding";
 
-const aeonikFont = localFont({
-  src: "../styles/aeonik-medium.woff",
-  variable: "--font-title",
+// Uni Inbox type system: General Sans (body/UI) + Inter Tight (display/headings)
+const generalSans = localFont({
+  src: [
+    {
+      path: "../styles/fonts/GeneralSans-400.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../styles/fonts/GeneralSans-500.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../styles/fonts/GeneralSans-600.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../styles/fonts/GeneralSans-700.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-general",
   preload: true,
   display: "swap",
 });
-const geist = Geist({
+const interTight = Inter_Tight({
   subsets: ["latin"],
-  variable: "--font-geist",
-  weight: ["400", "500", "600", "700"], // font-normal, font-medium, font-semibold, font-bold
+  variable: "--font-display",
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -132,7 +155,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body
-        className={`h-full ${env.NEXT_PUBLIC_USE_AEONIK_FONT ? aeonikFont.variable : ""} ${geist.variable} font-sans antialiased`}
+        className={`h-full ${generalSans.variable} ${interTight.variable} font-sans antialiased`}
       >
         <script
           type="application/ld+json"
@@ -141,15 +164,27 @@ export default async function RootLayout({
             __html: JSON.stringify(jsonLd),
           }}
         />
-        <PostHogProvider>
-          <Suspense>
-            <PostHogPageview />
-          </Suspense>
-          <GlobalProviders>
-            {children}
-            <Toaster closeButton richColors theme="light" visibleToasts={9} />
-          </GlobalProviders>
-        </PostHogProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <PostHogProvider>
+            <Suspense>
+              <PostHogPageview />
+            </Suspense>
+            <GlobalProviders>
+              {children}
+              <Toaster
+                closeButton
+                richColors
+                theme="system"
+                visibleToasts={9}
+              />
+            </GlobalProviders>
+          </PostHogProvider>
+        </ThemeProvider>
         <Analytics />
         <AxiomWebVitals />
         <UTM />

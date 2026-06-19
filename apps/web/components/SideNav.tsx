@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
 import { getEmailTerminology } from "@/utils/terminology";
 import {
   AlertCircleIcon,
@@ -32,7 +31,7 @@ import {
   Users2Icon,
   ZapIcon,
 } from "lucide-react";
-import { Logo } from "@/components/Logo";
+import { UniWordmark } from "@/components/uni-landing/UniWordmark";
 import { useComposeModal } from "@/providers/ComposeModalProvider";
 import {
   Sidebar,
@@ -274,10 +273,8 @@ export function SideNav({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="gap-0 pb-0">
         {state.includes("left-sidebar") ? (
-          <div className="flex items-center rounded-md pl-2 pr-0.5 py-3 text-foreground justify-between">
-            <Link href="/setup">
-              <Logo className="h-3.5" />
-            </Link>
+          <div className="flex items-center rounded-md pl-1 pr-0.5 py-3 text-foreground justify-between">
+            <UniWordmark href="/setup" compact />
             <SidebarTrigger name="left-sidebar" />
           </div>
         ) : (

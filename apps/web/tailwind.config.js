@@ -45,9 +45,10 @@ module.exports = {
         "marquee-reverse": "marquee-reverse var(--duration) linear infinite",
       },
       fontFamily: {
-        sans: ["var(--font-geist)", ...fontFamily.sans],
-        inter: ["var(--font-inter)", ...fontFamily.sans],
-        title: ["var(--font-title)", ...fontFamily.sans],
+        sans: ["var(--font-general)", ...fontFamily.sans],
+        inter: ["var(--font-general)", ...fontFamily.sans],
+        title: ["var(--font-display)", ...fontFamily.sans],
+        display: ["var(--font-display)", ...fontFamily.sans],
       },
       colors: {
         // shadcn/ui
@@ -93,6 +94,19 @@ module.exports = {
           "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
+        },
+        brand: {
+          blue: "hsl(var(--brand-blue))",
+          "blue-foreground": "hsl(var(--brand-blue-foreground))",
+          green: "hsl(var(--brand-green))",
+          "green-foreground": "hsl(var(--brand-green-foreground))",
+        },
+        chart: {
+          1: "hsl(var(--chart-1))",
+          2: "hsl(var(--chart-2))",
+          3: "hsl(var(--chart-3))",
+          4: "hsl(var(--chart-4))",
+          5: "hsl(var(--chart-5))",
         },
         // TODO: rename
         new: {

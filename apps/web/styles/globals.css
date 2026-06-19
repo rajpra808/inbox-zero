@@ -6,86 +6,98 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%; /* white */
-    --foreground: 222.2 47.4% 11.2%; /* slate-900 */
+    /* Uni Inbox — light. Spacious minimal, blue primary / green accent. */
+    --background: 210 40% 99%; /* near-white, faint cool */
+    --foreground: 222 47% 11%; /* slate-900 */
 
-    --muted: 210 40% 96.1%; /* slate-100 */
-    --muted-foreground: 215.4 16.3% 46.9%; /* slate-500 */
+    --muted: 210 40% 96%; /* slate-100 */
+    --muted-foreground: 215 18% 47%; /* slate-500 */
 
-    --popover: 0 0% 100%; /* white */
-    --popover-foreground: 222.2 47.4% 11.2%; /* slate-900 */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
 
-    --card: 0 0% 100%; /* white */
-    --card-foreground: 222.2 47.4% 11.2%; /* slate-900 */
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
 
-    --border: 214.3 31.8% 91.4%; /* slate-200 */
-    --input: 214.3 31.8% 91.4%; /* slate-200 */
+    --border: 214 32% 91%; /* slate-200 */
+    --input: 214 32% 89%;
 
-    --primary: 222.2 47.4% 11.2%; /* slate-900 */
-    --primary-foreground: 210 40% 98%; /* slate-50 */
+    --primary: 221 83% 53%; /* blue-600 */
+    --primary-foreground: 210 40% 99%;
 
-    --secondary: 210 40% 96.1%; /* slate-100 */
-    --secondary-foreground: 222.2 47.4% 11.2%; /* slate-900 */
+    --secondary: 210 40% 96%; /* neutral light */
+    --secondary-foreground: 222 47% 11%;
 
-    --accent: 210 40% 96.1%; /* slate-100 */
-    --accent-foreground: 222.2 47.4% 11.2%; /* slate-900 */
+    --accent: 160 70% 94%; /* faint green */
+    --accent-foreground: 162 80% 22%; /* emerald-800 */
 
-    --destructive: 0 100% 50%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 99%;
 
-    --ring: 215 20.2% 65.1%; /* slate-400 */
+    --ring: 221 83% 53%; /* blue */
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Brand accents (landing + highlights) */
+    --brand-blue: 221 83% 53%;
+    --brand-blue-foreground: 210 40% 99%;
+    --brand-green: 160 84% 39%; /* emerald-600 */
+    --brand-green-foreground: 210 40% 99%;
 
-    --chart-1: oklch(0.75 0.15 250);
-    --chart-2: oklch(0.65 0.18 250);
-    --chart-3: oklch(0.55 0.2 250);
-    --chart-4: oklch(0.45 0.22 250);
-    --chart-5: oklch(0.35 0.18 250);
+    --sidebar-background: 210 40% 98%;
+    --sidebar-foreground: 215 25% 27%;
+    --sidebar-primary: 221 83% 53%;
+    --sidebar-primary-foreground: 210 40% 99%;
+    --sidebar-accent: 160 70% 94%;
+    --sidebar-accent-foreground: 162 80% 22%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 221 83% 53%;
+
+    --chart-1: 221 83% 53%; /* blue */
+    --chart-2: 160 84% 39%; /* green */
+    --chart-3: 199 89% 48%; /* sky */
+    --chart-4: 173 80% 40%; /* teal */
+    --chart-5: 250 70% 60%; /* indigo */
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 85.7% 97.3%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --chart-1: oklch(0.7 0.2 250);
-    --chart-2: oklch(0.6 0.22 250);
-    --chart-3: oklch(0.5 0.24 250);
-    --chart-4: oklch(0.4 0.22 250);
-    --chart-5: oklch(0.3 0.18 250);
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 240 4.9% 83.9%;
+    /* Uni Inbox — dark. Deep blue-black, bright blue / green accent. */
+    --background: 222 47% 5%; /* deep navy-black */
+    --foreground: 210 40% 98%;
+    --card: 222 44% 7%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 44% 7%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217 91% 60%; /* bright blue */
+    --primary-foreground: 222 47% 8%;
+    --secondary: 217 33% 14%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 13%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 162 60% 13%; /* deep emerald */
+    --accent-foreground: 158 75% 62%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 16%;
+    --input: 217 33% 18%;
+    --ring: 217 91% 60%;
+    --brand-blue: 217 91% 60%;
+    --brand-blue-foreground: 222 47% 8%;
+    --brand-green: 158 75% 50%; /* emerald */
+    --brand-green-foreground: 222 47% 8%;
+    --chart-1: 217 91% 60%; /* blue */
+    --chart-2: 158 75% 50%; /* green */
+    --chart-3: 199 89% 58%; /* sky */
+    --chart-4: 173 70% 50%; /* teal */
+    --chart-5: 252 80% 70%; /* indigo */
+    --sidebar-background: 222 47% 6%;
+    --sidebar-foreground: 215 20% 75%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 222 47% 8%;
+    --sidebar-accent: 217 33% 13%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 14%;
+    --sidebar-ring: 217 91% 60%;
   }
 }
 

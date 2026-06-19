@@ -14,6 +14,7 @@ import { WELCOME_PATH } from "@/utils/config";
 import { CrispChatLoggedOutVisible } from "@/components/CrispChat";
 import { MutedText } from "@/components/Typography";
 import { normalizeInternalPath } from "@/utils/path";
+import { UniWordmark } from "@/components/uni-landing/UniWordmark";
 import {
   BRAND_NAME,
   SUPPORT_EMAIL,
@@ -42,51 +43,85 @@ export default async function AuthenticationPage(props: {
   const enabledProviders = Array.from(getEnabledLoginProviders());
 
   return (
-    <div className="flex h-screen flex-col justify-center text-foreground">
-      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-        <div className="flex flex-col text-center">
-          <h1 className="font-title text-2xl text-foreground">Sign In</h1>
-          <p className="mt-4 text-muted-foreground">
-            Your AI personal assistant for email.
+    <div className="flex min-h-screen text-foreground">
+      {/* Brand panel */}
+      <aside className="relative hidden w-1/2 overflow-hidden bg-gradient-to-br from-brand-blue to-brand-green lg:flex lg:flex-col lg:justify-between lg:p-12">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-20 [background:radial-gradient(circle_at_25%_15%,white,transparent_45%)]"
+        />
+        <div className="relative">
+          <UniWordmark
+            href="/"
+            className="[&_span:last-child]:text-white [&>span:first-child]:bg-white/15"
+          />
+        </div>
+        <div className="relative max-w-md">
+          <p className="font-display text-3xl font-semibold leading-tight tracking-tight text-white">
+            The inbox that runs itself.
+          </p>
+          <p className="mt-4 text-base leading-relaxed text-white/80">
+            Sign in to let {BRAND_NAME} read, sort, and draft your email — so
+            you open an inbox already at zero.
           </p>
         </div>
-        <div className="mt-4">
-          <Suspense>
-            <LoginForm
-              enabledProviders={enabledProviders}
-              useGoogleOauthEmulator={isGoogleOauthEmulationEnabled()}
-            />
-          </Suspense>
+        <p className="relative text-sm text-white/70">
+          One calm workspace for every account.
+        </p>
+      </aside>
+
+      {/* Form panel */}
+      <div className="flex w-full flex-col justify-center px-6 py-12 lg:w-1/2">
+        <div className="mx-auto flex w-full max-w-sm flex-col space-y-6">
+          <div className="flex justify-center lg:hidden">
+            <UniWordmark href="/" />
+          </div>
+          <div className="flex flex-col text-center">
+            <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground">
+              Welcome to {BRAND_NAME}
+            </h1>
+            <p className="mt-3 text-muted-foreground">
+              Sign in to reach inbox zero.
+            </p>
+          </div>
+          <div>
+            <Suspense>
+              <LoginForm
+                enabledProviders={enabledProviders}
+                useGoogleOauthEmulator={isGoogleOauthEmulationEnabled()}
+              />
+            </Suspense>
+          </div>
+
+          {searchParams?.error && <ErrorAlert error={searchParams?.error} />}
+
+          {!isSelfHosted ? (
+            <MutedText className="px-4 text-center text-xs">
+              By clicking continue, you agree to our{" "}
+              <Link
+                href="/terms"
+                className="underline underline-offset-4 hover:text-foreground"
+              >
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/privacy"
+                className="underline underline-offset-4 hover:text-foreground"
+              >
+                Privacy Policy
+              </Link>
+              .
+            </MutedText>
+          ) : null}
+
+          <LoginFooter
+            isSelfHosted={isSelfHosted}
+            selfHostedLoginFooterText={
+              env.NEXT_PUBLIC_SELF_HOSTED_LOGIN_FOOTER_TEXT || undefined
+            }
+          />
         </div>
-
-        {searchParams?.error && <ErrorAlert error={searchParams?.error} />}
-
-        {!isSelfHosted ? (
-          <MutedText className="px-8 pt-10 text-center">
-            By clicking continue, you agree to our{" "}
-            <Link
-              href="/terms"
-              className="underline underline-offset-4 hover:text-foreground"
-            >
-              Terms of Service
-            </Link>{" "}
-            and{" "}
-            <Link
-              href="/privacy"
-              className="underline underline-offset-4 hover:text-foreground"
-            >
-              Privacy Policy
-            </Link>
-            .
-          </MutedText>
-        ) : null}
-
-        <LoginFooter
-          isSelfHosted={isSelfHosted}
-          selfHostedLoginFooterText={
-            env.NEXT_PUBLIC_SELF_HOSTED_LOGIN_FOOTER_TEXT || undefined
-          }
-        />
       </div>
     </div>
   );

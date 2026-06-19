@@ -51,7 +51,7 @@ export function SideNavMenu({
           <SidebarMenuButton
             asChild
             isActive={item.active || activeHref === item.href}
-            className="h-9"
+            className="relative h-9 data-[active=true]:text-foreground data-[active=true]:before:absolute data-[active=true]:before:inset-y-1.5 data-[active=true]:before:left-0 data-[active=true]:before:w-0.5 data-[active=true]:before:rounded-full data-[active=true]:before:bg-brand-blue"
             tooltip={item.name}
             sidebarName="left-sidebar"
           >
