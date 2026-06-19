@@ -1,0 +1,24 @@
+# Run a locally-built image (e.g. the redesign branch) instead of the
+# upstream ghcr.io/elie222/inbox-zero:latest image.
+#
+# Why: docker-compose.yml pins the upstream image with `pull_policy: always`,
+# so it always pulls prebuilt code and never runs your local source. This
+# override points web + worker at a local image and disables the pull.
+#
+# Usage:
+#   1. Build the image from the current branch:
+#        docker build -f docker/Dockerfile.prod -t inbox-zero:local .
+#   2. Start the stack with this override merged in:
+#        docker compose -f docker-compose.yml -f docker-compose.local-build.yml up -d --force-recreate web worker
+#
+# Rebuild + restart after every change:
+#   docker build -f docker/Dockerfile.prod -t inbox-zero:local .
+#   docker compose -f docker-compose.yml -f docker-compose.local-build.yml up -d --force-recreate web worker
+
+services:
+  web:
+    image: inbox-zero:local
+    pull_policy: never
+  worker:
+    image: inbox-zero:local
+    pull_policy: never
