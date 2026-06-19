@@ -47,11 +47,11 @@ export function SideNavMenu({
   return (
     <SidebarMenu>
       {items.map((item) => (
-        <SidebarMenuItem key={item.name} className="font-semibold">
+        <SidebarMenuItem key={item.name} className="font-medium">
           <SidebarMenuButton
             asChild
             isActive={item.active || activeHref === item.href}
-            className="relative h-9 data-[active=true]:text-foreground data-[active=true]:before:absolute data-[active=true]:before:inset-y-1.5 data-[active=true]:before:left-0 data-[active=true]:before:w-0.5 data-[active=true]:before:rounded-full data-[active=true]:before:bg-brand-blue"
+            className="relative h-9 rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground data-[active=true]:bg-brand-blue/10 data-[active=true]:font-semibold data-[active=true]:text-brand-blue data-[active=true]:before:absolute data-[active=true]:before:inset-y-1.5 data-[active=true]:before:left-0 data-[active=true]:before:w-[3px] data-[active=true]:before:rounded-full data-[active=true]:before:bg-brand-blue [&>svg]:text-current"
             tooltip={item.name}
             sidebarName="left-sidebar"
           >
