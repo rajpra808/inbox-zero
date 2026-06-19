@@ -50,7 +50,7 @@ export function SideNavMenu({
         <SidebarMenuItem key={item.name} className="font-medium">
           <SidebarMenuButton
             asChild
-            isActive={item.active || activeHref === item.href}
+            isActive={item.active || isNavItemActive(activeHref, item.href)}
             className="relative h-9 rounded-lg text-sidebar-foreground transition-colors hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:font-semibold data-[active=true]:text-sidebar-accent-foreground data-[active=true]:before:absolute data-[active=true]:before:inset-y-1.5 data-[active=true]:before:left-0 data-[active=true]:before:w-[3px] data-[active=true]:before:rounded-full data-[active=true]:before:bg-[hsl(217_91%_60%)] [&>svg]:text-current"
             tooltip={item.name}
             sidebarName="left-sidebar"
@@ -99,4 +99,15 @@ function getNavHrefType(href: string) {
   if (href.startsWith("?")) return "query";
   if (href.startsWith("http")) return "external";
   return "internal";
+}
+
+// Highlight a nav item on its exact route and any sub-route, so deep pages
+// keep the parent item selected. Query-string links match exactly.
+function isNavItemActive(activeHref: string, itemHref: string) {
+  if (itemHref.startsWith("?") || itemHref.startsWith("http")) {
+    return activeHref === itemHref;
+  }
+  const currentPath = activeHref.split("?")[0];
+  const itemPath = itemHref.split("?")[0];
+  return currentPath === itemPath || currentPath.startsWith(`${itemPath}/`);
 }

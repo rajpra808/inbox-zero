@@ -270,7 +270,7 @@ export function SideNav({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { state } = useSidebar();
 
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon" variant="floating" {...props}>
       <SidebarHeader className="gap-0 pb-0">
         {state.includes("left-sidebar") ? (
           <div className="flex items-center justify-between rounded-md py-3 pl-1 pr-0.5 text-sidebar-foreground">
