@@ -273,8 +273,12 @@ export function SideNav({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="gap-0 pb-0">
         {state.includes("left-sidebar") ? (
-          <div className="flex items-center rounded-md pl-1 pr-0.5 py-3 text-foreground justify-between">
-            <UniWordmark href="/setup" compact />
+          <div className="flex items-center justify-between rounded-md py-3 pl-1 pr-0.5 text-sidebar-foreground">
+            <UniWordmark
+              href="/setup"
+              compact
+              className="[&>span:last-child]:text-sidebar-accent-foreground"
+            />
             <SidebarTrigger name="left-sidebar" />
           </div>
         ) : (

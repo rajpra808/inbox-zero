@@ -16,18 +16,18 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, video, description }: PageHeaderProps) {
   return (
-    <div>
-      <div className="flex flex-col sm:flex-row items-start sm:items-center mt-1 gap-3">
-        <div>
-          <PageHeading>{title}</PageHeading>
-          {description && (
-            <PageSubHeading className="mt-1">{description}</PageSubHeading>
-          )}
-        </div>
-        {video && (video.youtubeVideoId || video.muxPlaybackId) && (
-          <PageHeaderVideoButton video={video} />
+    <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="max-w-2xl">
+        <PageHeading className="text-2xl lg:text-3xl">{title}</PageHeading>
+        {description && (
+          <PageSubHeading className="mt-2 text-[15px] leading-relaxed">
+            {description}
+          </PageSubHeading>
         )}
       </div>
+      {video && (video.youtubeVideoId || video.muxPlaybackId) && (
+        <PageHeaderVideoButton video={video} />
+      )}
     </div>
   );
 }

@@ -44,14 +44,15 @@
     --brand-green: 160 84% 39%; /* emerald-600 */
     --brand-green-foreground: 210 40% 99%;
 
-    --sidebar-background: 210 40% 98%;
-    --sidebar-foreground: 215 25% 27%;
-    --sidebar-primary: 221 83% 53%;
-    --sidebar-primary-foreground: 210 40% 99%;
-    --sidebar-accent: 160 70% 94%;
-    --sidebar-accent-foreground: 162 80% 22%;
-    --sidebar-border: 214 32% 91%;
-    --sidebar-ring: 221 83% 53%;
+    /* Always-dark navy sidebar (also in light mode) for a distinct product feel */
+    --sidebar-background: 222 47% 8%;
+    --sidebar-foreground: 215 20% 70%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 222 47% 8%;
+    --sidebar-accent: 217 33% 16%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 217 33% 15%;
+    --sidebar-ring: 217 91% 60%;
 
     --chart-1: 221 83% 53%; /* blue */
     --chart-2: 160 84% 39%; /* green */

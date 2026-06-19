@@ -51,7 +51,7 @@ export function SideNavMenu({
           <SidebarMenuButton
             asChild
             isActive={item.active || activeHref === item.href}
-            className="relative h-9 rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground data-[active=true]:bg-brand-blue/10 data-[active=true]:font-semibold data-[active=true]:text-brand-blue data-[active=true]:before:absolute data-[active=true]:before:inset-y-1.5 data-[active=true]:before:left-0 data-[active=true]:before:w-[3px] data-[active=true]:before:rounded-full data-[active=true]:before:bg-brand-blue [&>svg]:text-current"
+            className="relative h-9 rounded-lg text-sidebar-foreground transition-colors hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:font-semibold data-[active=true]:text-sidebar-accent-foreground data-[active=true]:before:absolute data-[active=true]:before:inset-y-1.5 data-[active=true]:before:left-0 data-[active=true]:before:w-[3px] data-[active=true]:before:rounded-full data-[active=true]:before:bg-[hsl(217_91%_60%)] [&>svg]:text-current"
             tooltip={item.name}
             sidebarName="left-sidebar"
           >
